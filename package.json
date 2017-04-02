@@ -1,0 +1,29 @@
+{
+  "name": "hiring-docker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --ignore data app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SirZach/hiring-docker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SirZach/hiring-docker/issues"
+  },
+  "homepage": "https://github.com/SirZach/hiring-docker#readme"
+}
