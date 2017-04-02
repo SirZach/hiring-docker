@@ -9,6 +9,15 @@ define('hiring/tests/app.lint-test', ['exports'], function (exports) {
     assert.ok(true, 'app.js should pass ESLint.\n');
   });
 });
+define('hiring/tests/application/adapter.lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('ESLint - application/adapter.js');
+  QUnit.test('should pass ESLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'application/adapter.js should pass ESLint.\n');
+  });
+});
 define('hiring/tests/apply/controller.lint-test', ['exports'], function (exports) {
   'use strict';
 
@@ -24,7 +33,7 @@ define('hiring/tests/apply/route.lint-test', ['exports'], function (exports) {
   QUnit.module('ESLint - apply/route.js');
   QUnit.test('should pass ESLint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'apply/route.js should pass ESLint.\n');
+    assert.ok(false, 'apply/route.js should pass ESLint.\n24:31  - \'model\' is defined but never used. (no-unused-vars)');
   });
 });
 define('hiring/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
@@ -464,15 +473,6 @@ define('hiring/tests/index/route.lint-test', ['exports'], function (exports) {
   QUnit.test('should pass ESLint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'index/route.js should pass ESLint.\n');
-  });
-});
-define('hiring/tests/instance-initializers/preload.lint-test', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('ESLint - instance-initializers/preload.js');
-  QUnit.test('should pass ESLint', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'instance-initializers/preload.js should pass ESLint.\n2:7  - \'store\' is assigned a value but never used. (no-unused-vars)');
   });
 });
 define('hiring/tests/models/application-question.lint-test', ['exports'], function (exports) {

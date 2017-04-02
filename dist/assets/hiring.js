@@ -18,17 +18,31 @@ define('hiring/app', ['exports', 'ember', 'hiring/resolver', 'ember-load-initial
 
   exports['default'] = App;
 });
+define('hiring/application/adapter', ['exports', 'ember-data', 'hiring/config/environment'], function (exports, _emberData, _hiringConfigEnvironment) {
+  exports['default'] = _emberData['default'].JSONAPIAdapter.extend({
+    host: _hiringConfigEnvironment['default'].API_URL
+  });
+});
 define("hiring/application/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template({ "id": "SGnRVVWm", "block": "{\"statements\":[[\"open-element\",\"div\",[]],[\"static-attr\",\"class\",\"h-100vh w-100vw flex layout-column\"],[\"flush-element\"],[\"text\",\"\\n\"],[\"block\",[\"paper-toolbar\"],null,null,1],[\"text\",\"  \"],[\"open-element\",\"div\",[]],[\"static-attr\",\"class\",\"layout-row flex layout-align-center-start\"],[\"flush-element\"],[\"text\",\"\\n    \"],[\"append\",[\"unknown\",[\"outlet\"]],false],[\"text\",\"\\n  \"],[\"close-element\"],[\"text\",\"\\n\"],[\"close-element\"],[\"text\",\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"blocks\":[{\"statements\":[[\"text\",\"       \"],[\"open-element\",\"h2\",[]],[\"flush-element\"],[\"text\",\"Hiring Application\"],[\"close-element\"],[\"text\",\"\\n\"]],\"locals\":[]},{\"statements\":[[\"block\",[\"toolbar\",\"tools\"],null,null,0]],\"locals\":[\"toolbar\"]}],\"hasPartials\":false}", "meta": { "moduleName": "hiring/application/template.hbs" } });
 });
 define('hiring/apply/controller', ['exports', 'ember'], function (exports, _ember) {
   var Controller = _ember['default'].Controller;
+  var get = _ember['default'].get;
   exports['default'] = Controller.extend({
     questions: [],
 
+    currentStep: 0,
+
     actions: {
       saveModel: function saveModel() {
-        this.transitionToRoute('thank-you');
+        var _this = this;
+
+        var model = get(this, 'model');
+
+        model.save().then(function () {
+          _this.transitionToRoute('thank-you');
+        });
       }
     }
   });
@@ -51,6 +65,12 @@ define('hiring/apply/route', ['exports', 'ember'], function (exports, _ember) {
           applicationQuestions: applicationQuestions
         });
       });
+    },
+
+    setupController: function setupController(controller, model) {
+      this._super.apply(this, arguments);
+
+      controller.set('currentStep', 0);
     }
   });
 });
@@ -1642,46 +1662,6 @@ define("hiring/instance-initializers/ember-data", ["exports", "ember-data/-priva
     initialize: _emberDataPrivateInstanceInitializersInitializeStoreService["default"]
   };
 });
-define('hiring/instance-initializers/preload', ['exports'], function (exports) {
-  exports.initialize = initialize;
-
-  function initialize(appInstance) {
-    var store = appInstance.lookup('service:store');
-
-    // store.push({
-    //   data: [
-    //     {
-    //       id: 1,
-    //       type: 'question',
-    //       attributes: {
-    //         question: 'Is your name Zach McGonigal?',
-    //         answer: 'Yes'
-    //       }
-    //     },{
-    //       id: 2,
-    //       type: 'question',
-    //       attributes: {
-    //         question: 'Should you get this job?',
-    //         answer: 'Yes'
-    //       }
-    //     }, {
-    //       id: 3,
-    //       type: 'question',
-    //       attributes: {
-    //         question: 'If you combine the words "may" and "be" together what do you get?',
-    //         answer: 'Maybe'
-    //       }
-    //     }
-    //   ]
-    // });
-  }
-
-  exports['default'] = {
-    name: 'preload',
-    after: 'ember-data',
-    initialize: initialize
-  };
-});
 define('hiring/mixins/transition-mixin', ['exports', 'ember-css-transitions/mixins/transition-mixin'], function (exports, _emberCssTransitionsMixinsTransitionMixin) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -1749,7 +1729,7 @@ define('hiring/review/route', ['exports', 'ember'], function (exports, _ember) {
   var Route = _ember['default'].Route;
   exports['default'] = Route.extend({
     model: function model() {
-      return this.store.peekAll('application');
+      return this.store.findAll('application');
     }
   });
 });
@@ -2123,6 +2103,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("hiring/app")["default"].create({"name":"hiring","version":"0.0.0+6a170a96"});
+  require("hiring/app")["default"].create({"name":"hiring","version":"0.0.0+bb4f6b84"});
 }
 //# sourceMappingURL=hiring.map
